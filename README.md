@@ -17,7 +17,7 @@ $ npm install
 For development server, webpack-dev-server is reasoneable. It monitors update files and rebuild them automatically. Since webpack cli command is registerd in `package.json` in this project, just type following command to run webpack-dev-server.
 
 ```
-$ npm start
+$ npm run start
 ```
 
 Becareful! the webpack-dev-server rebuild files in `src` automatically but the bundled files are just placed on its memory. Build manually by allowing next section(Build assets), if you want need the bundled files.
@@ -27,5 +27,5 @@ Becareful! the webpack-dev-server rebuild files in `src` automatically but the b
 To put compiled files into `dist` directory, type the following command.
 
 ```
-$ webpack
+$ npm run build
 ```
