@@ -1,8 +1,17 @@
-import { createStore } from 'redux';
+import routes from '../src/routes';
+import { reduxReactRouter } from 'redux-router';
+import { devTools } from 'redux-devtools';
+import createHistory from 'history/lib/createBrowserHistory';
+import { createStore, compose} from 'redux';
 import rootReducer from '../reducers';
 
+const finalCrateStore = compose(
+  reduxReactRouter({ routes, createHistory }),
+  devTools()
+)(createStore);
+
 export default function configureStore(initialState) {
-  const store = createStore(rootReducer, initialState);
+  const store = finalCrateStore(rootReducer, initialState);
 
   if (module.hot) {
     // Enable Webpack hot module replacement for reducers

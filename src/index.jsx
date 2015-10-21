@@ -1,9 +1,11 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import injectTapEventPlugin from "react-tap-event-plugin";
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import { ReduxRouter } from 'redux-router';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools';
 
-import App from '../containers/App';
 import configureStore from '../store/configureStore';
 
 //Needed for React Developer Tools
@@ -17,9 +19,11 @@ injectTapEventPlugin();
 
 const store = configureStore();
 
-React.render(
-  <Provider store={store}>
-    {() => <App />}
-  </Provider>,
+ReactDOM.render(
+  <div>
+    <Provider store={store}>
+      <ReduxRouter />
+    </Provider>
+  </div>,
   document.getElementById("root")
 );

@@ -1,40 +1,106 @@
 import React, { PropTypes, Component } from 'react';
-import TodoTextInput from './TodoTextInput';
+import mui, {AppBar,
+             EnhancedButton,
+             Styles,
+             Tab,
+             Tabs,
+             Paper } from 'material-ui';
 
-import mui, {AppBar} from 'material-ui';
 const ThemeManager = require('material-ui/lib/styles/theme-manager');
-import MyRawTheme from '../src/material_ui_raw_theme_file'
+const { Colors, Spacing, Typography } = Styles;
+const DefaultRawTheme = Styles.LightRawTheme;
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.handleTab = this.handleTab.bind(this);
+  }
+
   static get childContextTypes() {
     return { muiTheme: React.PropTypes.object };
   }
 
   getChildContext(){
-    return {  muiTheme: ThemeManager.getMuiTheme(MyRawTheme)};
+    return {  muiTheme: ThemeManager.getMuiTheme(DefaultRawTheme)};
   }
 
-  handleSave(text) {
-    if (text.length !== 0) {
-      this.props.addTodo(text);
-    }
+  getTabName(tab){
+    return tab.props.name;
+  }
+
+  handleTab(tab){
+    console.log("hello");
+    this.props.onSelectTab(this.getTabName(tab));
   }
 
   render() {
+
+    let styles = {
+      root: {
+        backgroundColor: Colors.cyan500,
+        position: 'fixed',
+        height: 64,
+        top: 0,
+        right: 0,
+        zIndex: 4,
+        width: '100%'
+      },
+      span: {
+        color: Colors.white,
+        fontWeight: Typography.fontWeightLight,
+        left: 45,
+        top: 22,
+        position: 'absolute',
+        fontSize: 26
+      },
+      container: {
+        position: 'absolute',
+        right: (Spacing.desktopGutter/2) + 48,
+        bottom: 0
+      },
+      tabs: {
+        width: 425,
+        bottom:0
+      },
+      tab: {
+        height: 64
+      }
+    };
+
+    let homeIcon = (
+      <EnhancedButton
+        linkButton={true}
+        href="/">
+        <span style={styles.span}>MACくん2</span>
+      </EnhancedButton>)
+
     return (
       <header className="header">
-          <AppBar title="React + Redux + Material UI Boilerplate" />
-          <h1>todos</h1>
-          <TodoTextInput newTodo
-                         onSave={this.handleSave.bind(this)}
-                         placeholder="What needs to be done?" />
+        <Paper
+          zDepth={0}
+          rounded={false}
+          style={styles.root}>
+          {homeIcon}
+          <div style={styles.container}>
+            <Tabs
+              style={styles.tabs}
+              >
+              <Tab
+                onActive={this.handleTab}
+                label="Registration"
+                style={styles.tab}
+                name ="registration" />
+              <Tab
+                onActive={this.handleTab}
+                label="Search"
+                style={styles.tab}
+                name ="search"/>
+            </Tabs>
+          </div>
+        </Paper>
       </header>
     );
   }
 }
-
-Header.propTypes = {
-  addTodo: PropTypes.func.isRequired
-};
 
 export default Header;

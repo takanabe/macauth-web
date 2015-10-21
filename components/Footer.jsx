@@ -1,73 +1,41 @@
 import React, { PropTypes, Component } from 'react';
 import classnames from 'classnames';
-import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from '../constants/TodoFilters';
 
-const FILTER_TITLES = {
-  [SHOW_ALL]: 'All',
-  [SHOW_ACTIVE]: 'Active',
-  [SHOW_COMPLETED]: 'Completed'
-};
 
 class Footer extends Component {
-  renderTodoCount() {
-    const { activeCount } = this.props;
-    const itemWord = activeCount === 1 ? 'item' : 'items';
-
-    return (
-      <span className="todo-count">
-        <strong>{activeCount || 'No'}</strong> {itemWord} left
-      </span>
-    );
-  }
-
-  renderFilterLink(filter) {
-    const title = FILTER_TITLES[filter];
-    const { filter: selectedFilter, onShow } = this.props;
-
-    return (
-      <a className={classnames({ selected: filter === selectedFilter })}
-         style={{ cursor: 'pointer' }}
-         onClick={() => onShow(filter)}>
-        {title}
-      </a>
-    );
-  }
-
-  renderClearButton() {
-    const { completedCount, onClearCompleted } = this.props;
-    if (completedCount > 0) {
-      return (
-        <button className="clear-completed"
-                onClick={onClearCompleted} >
-          Clear completed
-        </button>
-      );
-    }
-  }
-
   render() {
+
+    let styles = {
+      footerStyle: {
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
+        paddingTop: 48,
+        paddingBottom: 48,
+        paddingLeft: 24,
+        paddingRight: 24,
+        textAlign: 'center',
+        boxSizing: 'border-box',
+        backgroundColor: '#212121'
+      },
+      footerText: {
+        color: 'lightgray'
+      },
+      footerLink: {
+        color: 'white',
+        textDecoration: 'none'
+      }
+    }
     return (
       <footer className="footer">
-        {this.renderTodoCount()}
-        <ul className="filters">
-          {[SHOW_ALL, SHOW_ACTIVE, SHOW_COMPLETED].map(filter =>
-            <li key={filter}>
-              {this.renderFilterLink(filter)}
-            </li>
-          )}
-        </ul>
-        {this.renderClearButton()}
+      <div style={styles.footerStyle}>
+        <p style={styles.footerText}>Mackun web is maintained on <a style={styles.footerLink} href="https://github.com/takanabe/mackun2-web"> https://github.com/takanabe/mackun2-web</a>. If there are any problems please access the url shown above modify the codes.
+        </p>
+      </div>
       </footer>
     );
   }
 }
 
-Footer.propTypes = {
-  completedCount: PropTypes.number.isRequired,
-  activeCount: PropTypes.number.isRequired,
-  filter: PropTypes.string.isRequired,
-  onClearCompleted: PropTypes.func.isRequired,
-  onShow: PropTypes.func.isRequired
-};
 
 export default Footer;
