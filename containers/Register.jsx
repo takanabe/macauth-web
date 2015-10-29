@@ -1,4 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import {bindActionCreators} from 'redux';
+import { registerMacInfo} from '../actions/index';
+import request from "superagent";
 import { connect } from 'react-redux';
 
 import mui, {
@@ -13,12 +16,16 @@ class Register extends Component {
   constructor() {
     super();
     this.state = {
-      modal: false
+      modal: false,
+      text:  ''
     };
+
     this.handleRegisterButton = this.handleRegisterButton.bind(this);
     this.handleCustomDialogCancel = this.handleCustomDialogCancel.bind(this);
     this.handleCustomDialogSubmit = this.handleCustomDialogSubmit.bind(this);
+    this.handleTextFieldChange= this.handleTextFieldChange.bind(this);
   }
+
 
   handleRegisterButton() {
     this.refs.customDialog.show();
@@ -29,11 +36,29 @@ class Register extends Component {
   }
 
   handleCustomDialogSubmit() {
+    console.log("Start submit");
+
+    let { dispatch } = this.props;
+
+    //disptach action
+    dispatch(registerMacInfo(this.state.text));
     this.refs.customDialog.dismiss();
   }
 
-  render() {
+  handleError(err) {
+    this.refs.errorDialog.show();
+    console.log("test:" + err);
+  }
 
+  handleErrorDialogCancel() {
+    this.refs.customDialog.dismiss();
+  }
+
+  handleTextFieldChange(e){
+    this.setState({ text: e.target.value })
+  }
+
+  render() {
     let styles = {
       root: {
         width: '80%',
@@ -64,7 +89,7 @@ class Register extends Component {
         marginRight: 20
       },
       templateButton: {
-      },
+      }
     };
 
     let customActions = [
@@ -80,14 +105,25 @@ class Register extends Component {
         onTouchTap={this.handleCustomDialogSubmit} />
     ];
 
+    let errorActions = [
+      <FlatButton
+        key={1}
+        label="Confirm"
+        secondary={true}
+        onTouchTap={this.handleErrorDialogCancel} />
+    ];
+
     return (
       <div style={styles.main}>
         <Paper style={styles.root}>
           <TextField
              style={styles.textfield}
              rows= '10'
-             hintText="Please paste excel template here !"
-             multiLine={true} /><br/>
+             rowsMax= '20'
+             hintText="Please paste excel template here !(ここはExcelで入力したサンプルを貼り付ける)"
+             value={this.state.text}
+             multiLine={true}
+             onChange={this.handleTextFieldChange}/><br/>
         </Paper>
         <div style={styles.group}>
         <div style={styles.container}>
@@ -97,8 +133,7 @@ class Register extends Component {
              onTouchTap={this.handleRegisterButton} />
           <RaisedButton
              style={styles.templateButton}
-             label="Display Template"
-              />
+             label="Display Template" />
         </div>
         </div>
         <Dialog
@@ -107,6 +142,12 @@ class Register extends Component {
             actions={customActions}
             modal={this.state.modal}>
             The actions in this window were passed in as an array of react objects.
+        </Dialog>
+        <Dialog
+            ref="errorDialog"
+            title="Invalid format data is submitted !!"
+            actions={errorActions}
+            modal={this.state.modal}>
         </Dialog>
       </div>
     );
@@ -121,12 +162,12 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
+// function mapDispatchToProps(dispatch) {
+//   return {
+//   }
+// }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  // mapDispatchToProps
 )(Register);

@@ -18,6 +18,9 @@ class App extends Component {
 
   render() {
     let styles = {
+      background: {
+        backgroundColor: '#f5f5f5'
+      },
       main: {
         paddingTop: 48,
         paddingBottom: 48,
@@ -31,7 +34,7 @@ class App extends Component {
     };
 
     return (
-      <div>
+      <div style={styles.background} >
         <Header onSelectTab={this.selectTab} />
         <div style={styles.main}>
           {this.props.children}
