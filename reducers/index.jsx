@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import todos from './todos';
+import { routerStateReducer as router } from 'redux-router';
 
 const rootReducer = combineReducers({
-    todos
+    router
 });
 
 export default rootReducer;

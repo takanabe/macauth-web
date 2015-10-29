@@ -1,41 +1,61 @@
 import React, { Component, PropTypes } from "react";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { pushState } from 'redux-router';
 import Header from '../components/Header';
-import MainSection from '../components/MainSection';
-import * as TodoActions from '../actions/todos';
+import Footer from '../components/Footer';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.selectTab = this.selectTab.bind(this);
+  }
+
+  selectTab(tabname){
+    this.props.pushState(null, `/${tabname}`);
+  }
+
   render() {
-    const { todos, actions } = this.props;
+    let styles = {
+      main: {
+        paddingTop: 48,
+        paddingBottom: 48,
+        paddingLeft: 24,
+        paddingRight: 24,
+        height: 720,
+        textAlign: 'center',
+        boxSizing: 'border-box',
+        width: '100%'
+      }
+    };
+
     return (
       <div>
-        <Header addTodo={actions.addTodo} />
-        <MainSection todos={todos} actions={actions} />
+        <Header onSelectTab={this.selectTab} />
+        <div style={styles.main}>
+          {this.props.children}
+        </div>
+        <Footer />
       </div>
     );
   }
 }
 
-
 App.propTypes = {
-  todos: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    todos: state.todos
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(TodoActions, dispatch)
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  {pushState}
 )(App);
