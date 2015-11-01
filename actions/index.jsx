@@ -1,6 +1,8 @@
 import request from 'superagent';
 
 export const REQUEST_POSTS = 'REQUEST_POSTS';
+export const FETCH_MAC_DATA = 'FETCH_MAC_DATA';
+
 let API_ENDPOINT_URL = (false) ? "https://exapmle.com" : 'http://127.0.0.1';
 
 function callPostApi(api_name,request_body, api_url=API_ENDPOINT_URL) {
@@ -15,7 +17,7 @@ function callPostApi(api_name,request_body, api_url=API_ENDPOINT_URL) {
             alert('Invalid format data\n' + err);
             reject(err);
           } else {
-            console.log(res.text);
+            // console.log(res.text);
             resolve(res.text)
           }
         }
@@ -39,7 +41,7 @@ function splitMacAddressInfoTextsIntoArray(mac_addresses_info_texts){
     return elem.replace(/(\s|\n|\r)+$/g, "");
   });
 
-  console.log(lines);
+  // console.log(lines);
   return lines;
 }
 
@@ -49,7 +51,7 @@ function deleteLinesIncludeOnlySpacesAndTabs(mac_addresses_info_array){
       return elem;
     }
   });
-  console.log(lines);
+  // console.log(lines);
   return lines;
 }
 
@@ -67,7 +69,7 @@ function createRegistrationRequestBody(mac_addresses_info_array){
                "information": elem[3]});
     });
 
-    console.log(request_data_array);
+    // console.log(request_data_array);
 
   return {"mac_addresses": request_data_array};
 }
@@ -80,3 +82,56 @@ export function registerMacInfo(macAddressInfo) {
 
    return requestPosts(callPostApi(api_name, request_body));
 }
+
+// Action Creators
+function requestGet(fetchedMacInfo) {
+  console.log("In action creator");
+  console.log(fetchedMacInfo);
+  return {
+    type: FETCH_MAC_DATA,
+    fetchedMacInfo: fetchedMacInfo
+  };
+}
+
+function dummy(err) {
+  alert('Invalid format data\n' + err);
+}
+
+function filterFetchedData(fetchedJsonData){
+  console.log("In filter data");
+  console.log(fetchedJsonData['mac_addresses']);
+  return fetchedJsonData['mac_addresses'];
+}
+
+function callSearchAPI(offset){
+  console.log("in call GET API");
+  return new Promise(
+    (resolve, reject) => {
+      request
+        .get(API_ENDPOINT_URL + '/mac_addresses?offset=' + offset)
+        .set('Accept', 'application/json')
+        .end(
+          (err, res) => {
+            if (err) {
+              reject(err);
+            } else {
+              console.log("Finish GET API");
+              console.log(JSON.parse(res.text));
+              resolve(filterFetchedData(JSON.parse(res.text)));
+            }
+          }
+        );
+    });
+}
+
+export function fetchMacInfo(offset = 6) {
+  console.log(offset);
+  console.log("In fetchMacInfo");
+  return (dispatch,getState) => {
+    return callSearchAPI(offset)
+      .then(requestGet)
+      .then(dispatch)
+      // .catch(dummy)
+  }
+}
+

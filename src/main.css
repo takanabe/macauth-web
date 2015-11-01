@@ -7,3 +7,46 @@ body {
   line-height: 20px;
   margin: 0px;
 }
+
+/* Pagination */
+
+.container {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  position: absolute;
+  font-family: 'Roboto', sans-serif;
+}
+.container .pagination {
+  font-size: 20px;
+  text-align: center;
+}
+.container .pagination span {
+  height: 30px;
+  width: 30px;
+  color: rgba(0, 0, 0, 0.5);
+  transition: color 2s;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 30px;
+}
+.container .pagination span[active] {
+  background: #2196F3;
+  border-radius: 50%;
+  color: white;
+}
+.container .pagination span[active]:hover {
+  color: white;
+}
+.container .pagination span:hover {
+  color: black;
+  transition: color 2s;
+}
+.container .pagination span:first-child {
+  margin-left: 10px;
+}
+.container .pagination span:last-child {
+  margin-right: 10px;
+}

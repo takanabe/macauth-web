@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import {bindActionCreators} from 'redux';
 import { registerMacInfo} from '../actions/index';
-import request from "superagent";
 import { connect } from 'react-redux';
 
 import mui, {
@@ -36,11 +35,10 @@ class Register extends Component {
   }
 
   handleCustomDialogSubmit() {
-    console.log("Start submit");
-
     let { dispatch } = this.props;
 
     //disptach action
+    console.log(registerMacInfo(this.state.text));
     dispatch(registerMacInfo(this.state.text));
     this.refs.customDialog.dismiss();
   }
@@ -120,7 +118,7 @@ class Register extends Component {
              style={styles.textfield}
              rows= '10'
              rowsMax= '20'
-             hintText="Please paste excel template here !(ここはExcelで入力したサンプルを貼り付ける)"
+             hintText="Please paste excel template here!"
              value={this.state.text}
              multiLine={true}
              onChange={this.handleTextFieldChange}/><br/>
