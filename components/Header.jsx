@@ -29,7 +29,6 @@ class Header extends Component {
   }
 
   handleTab(tab){
-    console.log("hello");
     this.props.onSelectTab(this.getTabName(tab));
   }
 
