@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 import { routerStateReducer as router } from 'redux-router';
 import {
-  REQUEST_POSTS, FETCH_MAC_DATA
+  REQUEST_POSTS, FETCH_MAC_DATA,
+  CHANGE_PAGE
 } from '../actions';
 
 const initialState = {
-    mac_addresses: ''
+    mac_addresses: '',
+    current_page: 1
 }
 
 
@@ -25,9 +27,13 @@ function fetchedData(state=initialState, action) {
   case FETCH_MAC_DATA:
     console.log("IN SEARCH Reducer");
     console.log(action);
-    const a = Object.assign({}, state, {mac_addresses: action.fetchedMacInfo});
-    console.log("assing:" +a);
-    return a;
+    return Object.assign({}, state, {mac_addresses: action.mac_addresses,
+                                     total_pages: action.total_pages,
+                                     current_page_size: action.current_page_size
+                                    });
+  case CHANGE_PAGE:
+    console.log("IN CHANGE_PAGE");
+    return Object.assign({}, state, {current_page: action.nextPage});
   default:
     return state;
   }

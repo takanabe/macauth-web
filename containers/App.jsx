@@ -39,6 +39,7 @@ class App extends Component {
         <div style={styles.main}>
           {this.props.children}
         </div>
+        <Footer />
       </div>
     );
   }

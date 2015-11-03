@@ -2,6 +2,7 @@ import request from 'superagent';
 
 export const REQUEST_POSTS = 'REQUEST_POSTS';
 export const FETCH_MAC_DATA = 'FETCH_MAC_DATA';
+export const CHANGE_PAGE = 'CHANGE_PAGE';
 
 let API_ENDPOINT_URL = (false) ? "https://exapmle.com" : 'http://127.0.0.1';
 
@@ -84,12 +85,13 @@ export function registerMacInfo(macAddressInfo) {
 }
 
 // Action Creators
-function requestGet(fetchedMacInfo) {
+function requestGet(JSONData) {
   console.log("In action creator");
-  console.log(fetchedMacInfo);
   return {
     type: FETCH_MAC_DATA,
-    fetchedMacInfo: fetchedMacInfo
+    mac_addresses: filterFetchedData(JSONData,"mac_addresses"),
+    total_pages: filterFetchedData(JSONData,"total_pages"),
+    current_page_size: filterFetchedData(JSONData,"current_page_size")
   };
 }
 
@@ -97,18 +99,18 @@ function dummy(err) {
   alert('Invalid format data\n' + err);
 }
 
-function filterFetchedData(fetchedJsonData){
+function filterFetchedData(JSONData, keyword){
   console.log("In filter data");
-  console.log(fetchedJsonData['mac_addresses']);
-  return fetchedJsonData['mac_addresses'];
+  console.log(JSONData[keyword]);
+  return JSONData[keyword];
 }
 
-function callSearchAPI(offset){
+function callSearchAPI(current_page){
   console.log("in call GET API");
   return new Promise(
     (resolve, reject) => {
       request
-        .get(API_ENDPOINT_URL + '/mac_addresses?offset=' + offset)
+        .get(API_ENDPOINT_URL + '/mac_addresses?page=' + current_page)
         .set('Accept', 'application/json')
         .end(
           (err, res) => {
@@ -117,21 +119,40 @@ function callSearchAPI(offset){
             } else {
               console.log("Finish GET API");
               console.log(JSON.parse(res.text));
-              resolve(filterFetchedData(JSON.parse(res.text)));
+              resolve(JSON.parse(res.text));
             }
           }
         );
     });
 }
 
-export function fetchMacInfo(offset = 6) {
-  console.log(offset);
+export function fetchMacInfo(current_page) {
+  console.log(current_page);
   console.log("In fetchMacInfo");
   return (dispatch,getState) => {
-    return callSearchAPI(offset)
+    return callSearchAPI(current_page)
       .then(requestGet)
       .then(dispatch)
       // .catch(dummy)
   }
 }
 
+export function changeCurrentPage(nextPage){
+  console.log("In changeCurrenPage" + nextPage);
+  // (dispatch,getState) => {
+  //   callSearchAPI(nextPage)
+  //     .then(requestGet)
+  //     .then(dispatch)
+  //     // .catch(dummy)
+  // }
+
+  return changePage(nextPage);
+}
+
+
+function changePage(nextPage){
+  return {
+    type: CHANGE_PAGE,
+    nextPage: nextPage,
+  };
+}

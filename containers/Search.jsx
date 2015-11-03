@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from 'react-redux';
-import { fetchMacInfo} from '../actions';
+import { fetchMacInfo, changeCurrentPage } from '../actions';
+import Pagination from '../components/Pagination';
 
 import mui, {
               Paper,
@@ -23,30 +24,72 @@ class Search extends Component {
     super(props);
     this.handleSearchButton = this.handleSearchButton.bind(this);
     this.handleTextFieldChange= this.handleTextFieldChange.bind(this);
+    this.handlePagination= this.handlePagination.bind(this);
+    this.handlePaginationToFirstPage= this.handlePaginationToFirstPage.bind(this);
+    this.handlePaginationToLastPage= this.handlePaginationToLastPage.bind(this);
+    this.handlePaginationToNextPage= this.handlePaginationToNextPage.bind(this);
+    this.handlePaginationToPreviousPage= this.handlePaginationToPreviousPage.bind(this);
   }
 
   componentDidMount() {
     const { dispatch, fetchedData} = this.props
-    dispatch(fetchMacInfo(0))
+    dispatch(fetchMacInfo(fetchedData.current_page))
   }
+
+  componentWillReceiveProps(nextProps) {
+    // if (nextProps.selectedReddit !== this.props.selectedReddit) {
+    //   const { dispatch, selectedReddit } = nextProps
+    //   dispatch(fetchPostsIfNeeded(selectedReddit))
+    // }
+  }
+
 
   handleTextFieldChange(e){
     this.setState({ text: e.target.value })
   }
 
-  handleSearchButton() {
-    let { dispatch } = this.props;
-
+  handleSearchButton(page) {
+    let { dispatch,fetchedData } = this.props;
     console.log("Click search");
-    dispatch(fetchMacInfo(7));
+    dispatch(fetchMacInfo(page));
     console.log("After search");
+  }
+
+  handlePagination(e){
+    let { dispatch,fetchedData } = this.props;
+    dispatch(changeCurrentPage(e.target.innerHTML))
+    this.handleSearchButton(e.target.innerHTML);
+  }
+
+  handlePaginationToFirstPage(){
+    let { dispatch,fetchedData } = this.props;
+    dispatch(changeCurrentPage(1))
+    this.handleSearchButton(1);
+  }
+
+  handlePaginationToLastPage(){
+    let { dispatch,fetchedData } = this.props;
+    let offset_limit = 10
+    let last_page = Math.ceil(fetchedData.total_pages/offset_limit)
+    dispatch(changeCurrentPage(last_page))
+    this.handleSearchButton(last_page);
+  }
+
+  handlePaginationToPreviousPage(){
+    let { dispatch,fetchedData } = this.props;
+    dispatch(changeCurrentPage(fetchedData.current_page - 1))
+    this.handleSearchButton(fetchedData.current_page - 1);
+  }
+
+  handlePaginationToNextPage(){
+    let { dispatch,fetchedData } = this.props;
+    dispatch(changeCurrentPage(fetchedData.current_page + 1))
+    this.handleSearchButton(fetchedData.current_page + 1);
   }
 
   render() {
     const { mac_addresses } = this.props.fetchedData
     let elem;
-
-
     let styles = {
       root: {
         width: '60%',
@@ -91,6 +134,8 @@ class Search extends Component {
 
     console.log("Before calc length");
     console.log(mac_addresses);
+
+
     if(0 < mac_addresses.length) {
       elem = mac_addresses.map(elem =>
               <TableRow>
@@ -155,24 +200,16 @@ class Search extends Component {
             {elem}
           </TableBody>
           <TableFooter>
+            <TableRow>
+              <Pagination handlePagination={this.handlePagination}
+                          handlePaginationToLastPage={this.handlePaginationToLastPage}
+                          handlePaginationToFirstPage={this.handlePaginationToFirstPage}
+                          handlePaginationToNextPage={this.handlePaginationToNextPage}
+                          handlePaginationToPreviousPage={this.handlePaginationToPreviousPage}
+                          page_data={this.props.fetchedData} />
+            </TableRow>
           </TableFooter>
         </Table>
-        {/* Pagination */}
-        <div className="container">
-          <div className="pagination">
-            <span>&lt;</span>
-            <span isActive='true'>1</span>
-            <span>2</span>
-            <span>3</span>
-            <span>4</span>
-            <span>5</span>
-            <span>6</span>
-            <span>7</span>
-            <span>8</span>
-            <span>9</span>
-            <span>&gt;</span>
-          </div>
-        </div>
 
       </div>
     );
@@ -183,13 +220,14 @@ Search.propTypes = {
 };
 
 
-
 function mapStateToProps(state) {
   console.log(state);
   const { fetchedData } = state
 
   return {
+    // reducer経由で変更
     fetchedData,
+    // 固定値
     fixedHeader: true,
     fixedFooter: true,
     stripedRows: false,
@@ -198,7 +236,7 @@ function mapStateToProps(state) {
     multiSelectable: false,
     enableSelectAll: false,
     deselectOnClickaway: true,
-    height: '520px'
+    height: '300px'
   };
 }
 
