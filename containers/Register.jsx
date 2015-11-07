@@ -37,8 +37,6 @@ class Register extends Component {
   handleCustomDialogSubmit() {
     let { dispatch } = this.props;
 
-    //disptach action
-    console.log(registerMacInfo(this.state.text));
     dispatch(registerMacInfo(this.state.text));
     this.refs.customDialog.dismiss();
   }

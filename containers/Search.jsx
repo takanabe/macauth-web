@@ -33,7 +33,7 @@ class Search extends Component {
 
   componentDidMount() {
     const { dispatch, fetchedData} = this.props
-    dispatch(fetchMacInfo(fetchedData.current_page))
+    dispatch(fetchMacInfo('', fetchedData.current_page))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,9 +49,10 @@ class Search extends Component {
   }
 
   handleSearchButton(page) {
+    let keywords = this.refs.searchField.getValue();
     let { dispatch,fetchedData } = this.props;
     console.log("Click search");
-    dispatch(fetchMacInfo(page));
+    dispatch(fetchMacInfo(keywords, page));
     console.log("After search");
   }
 
@@ -145,8 +146,6 @@ class Search extends Component {
               <TableRowColumn style={styles.tableRowColumn} >{elem['information']}</TableRowColumn>
               <TableRowColumn style={styles.tableRowColumn} >{elem['created_at']}</TableRowColumn>
               <TableRowColumn style={styles.tableRowColumn} >{elem['updated_at']}</TableRowColumn>
-              <TableRowColumn style={styles.tableRowColumn} ><RaisedButton label="Edit" /></TableRowColumn>
-              <TableRowColumn style={styles.tableRowColumn} ><RaisedButton label="Delete" /></TableRowColumn>
               </TableRow>
              );
     }else{
@@ -159,7 +158,9 @@ class Search extends Component {
         <Paper style={styles.root}>
             <TextField
               style={styles.textfield}
-              hintText="Please input words you want to search.(Not implemented Now)" />
+              ref="searchField"
+              onEnterKeyDown = {this.handleSearchButton}
+              hintText="Please input words you want to search.(if you feel search function is too slow, please enter keywords and press search button.)" />
             <RaisedButton
               label="Search"
               style={styles.searchButton}
@@ -169,12 +170,14 @@ class Search extends Component {
           height={this.props.height}
           fixedHeader={this.props.fixedHeader}
           fixedFooter={this.props.fixedFooter}
-          selectable={this.props.selectable}
-          multiSelectable={this.props.multiSelectable}
-          onRowSelection={this._onRowSelection}>
-          <TableHeader enableSelectAll={this.props.enableSelectAll}>
+          selectable={true}
+          multiSelectable={true}
+          onCellClick={false}
+          onRowSelection={false}>
+          <TableHeader
+             enableSelectAll={true}>
             <TableRow>
-              <TableHeaderColumn colSpan="8"  style={styles.tableHeader}>
+              <TableHeaderColumn colSpan="6"  style={styles.tableHeader}>
                 Registered MAC Address information
                 <RaisedButton
                   label="Delete Checked Rows"
@@ -189,14 +192,10 @@ class Search extends Component {
               <TableHeaderColumn style={styles.tableHeaderColumn} tooltip='The information such as username, device model, etc...'>Other Information</TableHeaderColumn>
               <TableHeaderColumn style={styles.tableHeaderColumn}>Created Date(UTC)</TableHeaderColumn>
               <TableHeaderColumn style={styles.tableHeaderColumn}>Updated Date(UTC)</TableHeaderColumn>
-              <TableHeaderColumn style={styles.tableHeaderColumn}>Action1</TableHeaderColumn>
-              <TableHeaderColumn style={styles.tableHeaderColumn}>Action2</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody
-            deselectOnClickaway={this.props.deselectOnClickaway}
-            showRowHover={this.props.showRowHover}
-            stripedRows={this.props.stripedRows}>
+            >
             {elem}
           </TableBody>
           <TableFooter>

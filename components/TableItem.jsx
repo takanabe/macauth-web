@@ -13,13 +13,13 @@ class TableItem extends Component {
   render() {
     const { elem } = this.props;
     let element = (
-      <TableRow>
-        <TableRowColumn>{elem['id']}</TableRowColumn>
-        <TableRowColumn>{elem['user_group_id']}</TableRowColumn>
-        <TableRowColumn>{elem['vlan_id']}</TableRowColumn>
-        <TableRowColumn>{elem['information']}</TableRowColumn>
-        <TableRowColumn>{elem['created_at']}</TableRowColumn>
-        <TableRowColumn>{elem['updated_at']}</TableRowColumn>
+      <TableRow onClick={false}>
+        <TableRowColumn onClick={console.log("teset")}>{elem['id']}</TableRowColumn>
+        <TableRowColumn onClick={console.log("teset")}>{elem['user_group_id']}</TableRowColumn>
+        <TableRowColumn onClick={console.log("teset")}>{elem['vlan_id']}</TableRowColumn>
+        <TableRowColumn onClick={console.log("teset")}>{elem['information']}</TableRowColumn>
+        <TableRowColumn onClick={console.log("teset")}>{elem['created_at']}</TableRowColumn>
+        <TableRowColumn onClick={console.log("teset")}>{elem['updated_at']}</TableRowColumn>
       </TableRow>
     );
 

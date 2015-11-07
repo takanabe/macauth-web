@@ -7,6 +7,7 @@ export const CHANGE_PAGE = 'CHANGE_PAGE';
 let API_ENDPOINT_URL = (false) ? "https://exapmle.com" : 'http://127.0.0.1';
 
 function callPostApi(api_name,request_body, api_url=API_ENDPOINT_URL) {
+  console.log("Call POST API")
   return new Promise(function(resolve, reject) {
     request
       .post(API_ENDPOINT_URL + api_name)
@@ -105,12 +106,12 @@ function filterFetchedData(JSONData, keyword){
   return JSONData[keyword];
 }
 
-function callSearchAPI(current_page){
-  console.log("in call GET API");
+
+function callSearchAPI(keywords,current_page){
   return new Promise(
     (resolve, reject) => {
       request
-        .get(API_ENDPOINT_URL + '/mac_addresses?page=' + current_page)
+        .get(API_ENDPOINT_URL + '/mac_addresses/search?q=' + keywords + '&page=' + current_page)
         .set('Accept', 'application/json')
         .end(
           (err, res) => {
@@ -126,16 +127,18 @@ function callSearchAPI(current_page){
     });
 }
 
-export function fetchMacInfo(current_page) {
+export function fetchMacInfo(keywords, current_page) {
   console.log(current_page);
   console.log("In fetchMacInfo");
   return (dispatch,getState) => {
-    return callSearchAPI(current_page)
+    return callSearchAPI(keywords, current_page)
       .then(requestGet)
       .then(dispatch)
       // .catch(dummy)
   }
 }
+
+
 
 export function changeCurrentPage(nextPage){
   console.log("In changeCurrenPage" + nextPage);

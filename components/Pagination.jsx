@@ -43,13 +43,15 @@ class Pagination extends Component {
     }
     console.log("Before Pagination");
     if(num_row < 100){
-      let n = Math.ceil(num_row/offset_limit);
+      let n = Math.ceil(total_pages - (current_page-1));
       let pagination_num_array = new Array(n);
       for (let i = 0; i < n; i++) {
-          pagination_num_array[i] = i + 1; //page番号を1からスタートさせる
+          pagination_num_array[i] = current_page + i;
       }
-      pagination = pagination_num_array.map(elem =>
-                                    <span value={elem} onClick={this.props.handlePagination}>{elem}</span>
+      pagination = pagination_num_array.map((elem,index) =>
+                                    <span value={elem}
+                                          style={(index == 0) ? styles.current_page : styles.other_page}
+                                          onClick={this.props.handlePagination}>{elem}</span>
                                    );
       console.log(pagination);
     }else if(total_pages - (offset_limit - 1) <= current_page){
