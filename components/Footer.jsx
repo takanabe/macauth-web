@@ -8,10 +8,11 @@ class Footer extends Component {
     let styles = {
       footerStyle: {
         width: '100%',
+        height: 70,
         position: 'absolute',
         bottom: 0,
-        paddingTop: 48,
-        paddingBottom: 48,
+        paddingTop: 'auto',
+        paddingBottom: 'auto',
         paddingLeft: 24,
         paddingRight: 24,
         textAlign: 'center',
@@ -19,6 +20,8 @@ class Footer extends Component {
         backgroundColor: '#212121'
       },
       footerText: {
+        paddingTop: 15,
+        paddingBottom: 15,
         color: 'lightgray'
       },
       footerLink: {

@@ -1,9 +1,13 @@
 import request from 'superagent';
 
 export const REQUEST_POSTS = 'REQUEST_POSTS';
+export const FETCH_MAC_DATA = 'FETCH_MAC_DATA';
+export const CHANGE_PAGE = 'CHANGE_PAGE';
+
 let API_ENDPOINT_URL = (false) ? "https://exapmle.com" : 'http://127.0.0.1';
 
 function callPostApi(api_name,request_body, api_url=API_ENDPOINT_URL) {
+  console.log("Call POST API")
   return new Promise(function(resolve, reject) {
     request
       .post(API_ENDPOINT_URL + api_name)
@@ -15,7 +19,7 @@ function callPostApi(api_name,request_body, api_url=API_ENDPOINT_URL) {
             alert('Invalid format data\n' + err);
             reject(err);
           } else {
-            console.log(res.text);
+            // console.log(res.text);
             resolve(res.text)
           }
         }
@@ -39,7 +43,7 @@ function splitMacAddressInfoTextsIntoArray(mac_addresses_info_texts){
     return elem.replace(/(\s|\n|\r)+$/g, "");
   });
 
-  console.log(lines);
+  // console.log(lines);
   return lines;
 }
 
@@ -49,7 +53,7 @@ function deleteLinesIncludeOnlySpacesAndTabs(mac_addresses_info_array){
       return elem;
     }
   });
-  console.log(lines);
+  // console.log(lines);
   return lines;
 }
 
@@ -67,7 +71,7 @@ function createRegistrationRequestBody(mac_addresses_info_array){
                "information": elem[3]});
     });
 
-    console.log(request_data_array);
+    // console.log(request_data_array);
 
   return {"mac_addresses": request_data_array};
 }
@@ -79,4 +83,79 @@ export function registerMacInfo(macAddressInfo) {
   const api_name = '/mac_addresses';
 
    return requestPosts(callPostApi(api_name, request_body));
+}
+
+// Action Creators
+function requestGet(JSONData) {
+  console.log("In action creator");
+  return {
+    type: FETCH_MAC_DATA,
+    mac_addresses: filterFetchedData(JSONData,"mac_addresses"),
+    total_pages: filterFetchedData(JSONData,"total_pages"),
+    current_page_size: filterFetchedData(JSONData,"current_page_size")
+  };
+}
+
+function dummy(err) {
+  alert('Invalid format data\n' + err);
+}
+
+function filterFetchedData(JSONData, keyword){
+  console.log("In filter data");
+  console.log(JSONData[keyword]);
+  return JSONData[keyword];
+}
+
+
+function callSearchAPI(keywords,current_page){
+  return new Promise(
+    (resolve, reject) => {
+      request
+        .get(API_ENDPOINT_URL + '/mac_addresses/search?q=' + keywords + '&page=' + current_page)
+        .set('Accept', 'application/json')
+        .end(
+          (err, res) => {
+            if (err) {
+              reject(err);
+            } else {
+              console.log("Finish GET API");
+              console.log(JSON.parse(res.text));
+              resolve(JSON.parse(res.text));
+            }
+          }
+        );
+    });
+}
+
+export function fetchMacInfo(keywords, current_page) {
+  console.log(current_page);
+  console.log("In fetchMacInfo");
+  return (dispatch,getState) => {
+    return callSearchAPI(keywords, current_page)
+      .then(requestGet)
+      .then(dispatch)
+      // .catch(dummy)
+  }
+}
+
+
+
+export function changeCurrentPage(nextPage){
+  console.log("In changeCurrenPage" + nextPage);
+  // (dispatch,getState) => {
+  //   callSearchAPI(nextPage)
+  //     .then(requestGet)
+  //     .then(dispatch)
+  //     // .catch(dummy)
+  // }
+
+  return changePage(nextPage);
+}
+
+
+function changePage(nextPage){
+  return {
+    type: CHANGE_PAGE,
+    nextPage: nextPage,
+  };
 }

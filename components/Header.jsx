@@ -94,6 +94,11 @@ class Header extends Component {
                 label="Search"
                 style={styles.tab}
                 name ="search"/>
+              <Tab
+                onActive={this.handleTab}
+                label="Usage"
+                style={styles.tab}
+                name ="usage"/>
             </Tabs>
           </div>
         </Paper>
