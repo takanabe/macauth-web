@@ -1,11 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { connect } from 'react-redux';
-import { fetchMacInfo, changeCurrentPage, selectedMacAddress, deleteMacInfo } from '../actions';
+import { fetchMacInfo, changeCurrentPage } from '../actions';
 import Pagination from '../components/Pagination';
 
 import mui, {
-              Dialog,
-              FlatButton,
               Paper,
               RaisedButton,
               Table,
@@ -21,27 +19,16 @@ import mui, {
               ToolbarSeparator
             } from 'material-ui';
 
-class Search extends Component {
+class VlanAndUserGroup extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      modal: false,
-    };
-
-    this.handleSearchButton = this.handleSearchButton.bind(this);
+    this.handleVlanAndUserGroupButton = this.handleSearchButton.bind(this);
     this.handleTextFieldChange= this.handleTextFieldChange.bind(this);
     this.handlePagination= this.handlePagination.bind(this);
     this.handlePaginationToFirstPage= this.handlePaginationToFirstPage.bind(this);
     this.handlePaginationToLastPage= this.handlePaginationToLastPage.bind(this);
     this.handlePaginationToNextPage= this.handlePaginationToNextPage.bind(this);
     this.handlePaginationToPreviousPage= this.handlePaginationToPreviousPage.bind(this);
-    this.handleDeleteButton= this.handleDeleteButton.bind(this);
-    this.handleSelection= this.handleSelection.bind(this);
-    this.deleteMacAddress = this.deleteMacAddress.bind(this);
-    this.handleCustomDialogCancel = this.handleCustomDialogCancel.bind(this);
-    this.handleCustomDialogSubmit = this.handleCustomDialogSubmit.bind(this);
-    this.handleError = this.handleError.bind(this);
-    this.handleErrorDialogCancel  = this.handleErrorDialogCancel.bind(this);
   }
 
   componentDidMount() {
@@ -49,10 +36,19 @@ class Search extends Component {
     dispatch(fetchMacInfo('', fetchedData.current_page))
   }
 
-  handleTextFieldChange(e){
+  componentWillReceiveProps(nextProps) {
+    // if (nextProps.selectedReddit !== this.props.selectedReddit) {
+    //   const { dispatch, selectedReddit } = nextProps
+    //   dispatch(fetchPostsIfNeeded(selectedReddit))
+    // }
   }
 
-  handleSearchButton(page) {
+
+  handleTextFieldChange(e){
+    this.setState({ text: e.target.value })
+  }
+
+  handleVlanAndUserGroupButton(page) {
     let keywords = this.refs.searchField.getValue();
     let { dispatch,fetchedData } = this.props;
     console.log("Click search");
@@ -63,13 +59,13 @@ class Search extends Component {
   handlePagination(e){
     let { dispatch,fetchedData } = this.props;
     dispatch(changeCurrentPage(e.target.innerHTML))
-    this.handleSearchButton(e.target.innerHTML);
+    this.handleVlanAndUserGroupButton(e.target.innerHTML);
   }
 
   handlePaginationToFirstPage(){
     let { dispatch,fetchedData } = this.props;
     dispatch(changeCurrentPage(1))
-    this.handleSearchButton(1);
+    this.handleVlanAndUserGroupButton(1);
   }
 
   handlePaginationToLastPage(){
@@ -77,93 +73,23 @@ class Search extends Component {
     let offset_limit = 10
     let last_page = Math.ceil(fetchedData.total_pages/offset_limit)
     dispatch(changeCurrentPage(last_page))
-    this.handleSearchButton(last_page);
+    this.handleVlanAndUserGroupButton(last_page);
   }
 
   handlePaginationToPreviousPage(){
     let { dispatch,fetchedData } = this.props;
     dispatch(changeCurrentPage(fetchedData.current_page - 1))
-    this.handleSearchButton(fetchedData.current_page - 1);
+    this.handleVlanAndUserGroupButton(fetchedData.current_page - 1);
   }
 
   handlePaginationToNextPage(){
     let { dispatch,fetchedData } = this.props;
     dispatch(changeCurrentPage(fetchedData.current_page + 1))
-    this.handleSearchButton(fetchedData.current_page + 1);
-  }
-
-  handleCustomDialogCancel() {
-    this.refs.customDialog.dismiss();
-  }
-
-  handleCustomDialogSubmit() {
-    this.deleteMacAddress();
-    this.refs.customDialog.dismiss();
-  }
-
-  handleDeleteButton() {
-    this.refs.customDialog.show();
-  }
-
-  deleteMacAddress() {
-    console.log("Delete Button Pressed");
-    let { dispatch , fetchedData} = this.props;
-    let selected_mac_address = fetchedData.selected_mac_address;
-
-    console.log(selected_mac_address)
-    if(selected_mac_address == undefined){
-
-      this.handleError()
-    }else if(0 < selected_mac_address.length){
-      deleteMacInfo(fetchedData.selected_mac_address);
-      dispatch(fetchMacInfo("", 1));
-      console.log("After Delete");
-    }else{
-      this.handleError()
-    }
-  }
-
-  handleSelection(selectedRows){
-    let { dispatch, fetchedData } = this.props;
-    if(selectedRows.length == 0 ){
-      dispatch(selectedMacAddress(""));
-    }else{
-      let selected_mac_addresses = fetchedData.mac_addresses[selectedRows[0]];
-      dispatch(selectedMacAddress(selected_mac_addresses["id"]));
-    }
-  }
-
-  handleError() {
-    this.refs.errorDialog.show();
-  }
-
-  handleErrorDialogCancel() {
-    this.refs.errorDialog.dismiss();
+    this.handleVlanAndUserGroupButton(fetchedData.current_page + 1);
   }
 
   render() {
     const { mac_addresses } = this.props.fetchedData
-
-    let customActions = [
-      <FlatButton
-        key={1}
-        label="Cancel"
-        secondary={true}
-        onTouchTap={this.handleCustomDialogCancel} />,
-      <FlatButton
-        key={2}
-        label="Submit"
-        primary={true}
-        onTouchTap={this.handleCustomDialogSubmit} />
-    ];
-    let errorActions = [
-      <FlatButton
-        key={1}
-        label="Confirm"
-        secondary={true}
-        onTouchTap={this.handleErrorDialogCancel} />
-    ];
-
     let elem;
     let styles = {
       root: {
@@ -233,29 +159,30 @@ class Search extends Component {
             <TextField
               style={styles.textfield}
               ref="searchField"
-              onEnterKeyDown = {this.handleSearchButton}
+              onEnterKeyDown = {this.handleVlanAndUserGroupButton}
               hintText="Please input words you want to search.(if you feel search function is too slow, please enter keywords and press search button.)" />
             <RaisedButton
-              label="Search"
+              label="VlanAndUserGroup"
               style={styles.searchButton}
-              onTouchTap={this.handleSearchButton} />
+              onTouchTap={this.handleVlanAndUserGroupButton} />
         </Paper><br/>
         <Table
           height={this.props.height}
           fixedHeader={this.props.fixedHeader}
           fixedFooter={this.props.fixedFooter}
           selectable={true}
-          multiSelectable={false}
+          multiSelectable={true}
           onCellClick={false}
-          onRowSelection={this.handleSelection}>
-          <TableHeader>
+          onRowSelection={false}>
+          <TableHeader
+             enableSelectAll={true}>
             <TableRow>
               <TableHeaderColumn colSpan="6"  style={styles.tableHeader}>
                 Registered MAC Address information
                 <RaisedButton
-                  label="Delete Checked Row"
+                  label="Delete Checked Rows"
                   style={styles.deleteButton}
-                  onTouchTap={this.handleDeleteButton} />
+                  />
               </TableHeaderColumn>
             </TableRow>
             <TableRow>
@@ -268,7 +195,7 @@ class Search extends Component {
             </TableRow>
           </TableHeader>
           <TableBody
-            showRowHover={true} >
+            >
             {elem}
           </TableBody>
           <TableFooter>
@@ -282,28 +209,18 @@ class Search extends Component {
             </TableRow>
           </TableFooter>
         </Table>
-        <Dialog
-            ref="customDialog"
-            title="Are you sure to delete MAC info ?"
-            actions={customActions}
-            modal={this.state.modal}>
-        </Dialog>
-        <Dialog
-            ref="errorDialog"
-            title="Checkbox is not selected or there is no MAC data !!"
-            actions={errorActions}
-            modal={this.state.modal}>
-        </Dialog>
+
       </div>
     );
   }
 }
 
-Search.propTypes = {
+VlanAndUserGroup.propTypes = {
 };
 
 
 function mapStateToProps(state) {
+  console.log(state);
   const { fetchedData } = state
 
   return {
@@ -312,6 +229,12 @@ function mapStateToProps(state) {
     // 固定値
     fixedHeader: true,
     fixedFooter: true,
+    stripedRows: false,
+    showRowHover: false,
+    selectable: true,
+    multiSelectable: false,
+    enableSelectAll: false,
+    deselectOnClickaway: true,
     height: '300px'
   };
 }
@@ -324,4 +247,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps
   // mapDispatchToProps
-)(Search);
+)(VlanAndUserGroup);
