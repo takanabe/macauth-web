@@ -38,6 +38,7 @@ class Register extends Component {
     let { dispatch } = this.props;
 
     dispatch(registerMacInfo(this.state.text));
+    this.setState({ text: ""})
     this.refs.customDialog.dismiss();
   }
 
@@ -134,7 +135,7 @@ class Register extends Component {
         </div>
         <Dialog
             ref="customDialog"
-            title="Are you sure to register following MAC info ?"
+            title="Are you sure to register MAC info ?"
             actions={customActions}
             modal={this.state.modal}>
             The actions in this window were passed in as an array of react objects.

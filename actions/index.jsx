@@ -3,6 +3,8 @@ import request from 'superagent';
 export const REQUEST_POSTS = 'REQUEST_POSTS';
 export const FETCH_MAC_DATA = 'FETCH_MAC_DATA';
 export const CHANGE_PAGE = 'CHANGE_PAGE';
+export const CHANGE_SELECTED_MACADDRESS = 'CHANGE_SELECTED_MACADDRESS';
+
 
 let API_ENDPOINT_URL = (false) ? "https://exapmle.com" : 'http://127.0.0.1';
 
@@ -139,16 +141,33 @@ export function fetchMacInfo(keywords, current_page) {
 }
 
 
+export function deleteMacInfo(mac_addresses_to_be_deleted) {
+  console.log("In deleteMacInfo");
+    return callDeleteAPI(mac_addresses_to_be_deleted)
+             .then(location.href="/search?page=1")
+}
+
+function callDeleteAPI(mac_addresses_to_be_deleted){
+  return new Promise(
+    (resolve, reject) => {
+      request
+        .del(API_ENDPOINT_URL + '/mac_addresses/' + mac_addresses_to_be_deleted)
+        .set('Accept', 'application/json')
+        .end(
+          (err, res) => {
+            if (err) {
+              console.log(err)
+              reject(err);
+            } else {
+              console.log("Finish DELETE API");
+              resolve();
+            }
+          }
+        );
+    });
+}
 
 export function changeCurrentPage(nextPage){
-  console.log("In changeCurrenPage" + nextPage);
-  // (dispatch,getState) => {
-  //   callSearchAPI(nextPage)
-  //     .then(requestGet)
-  //     .then(dispatch)
-  //     // .catch(dummy)
-  // }
-
   return changePage(nextPage);
 }
 
@@ -157,5 +176,17 @@ function changePage(nextPage){
   return {
     type: CHANGE_PAGE,
     nextPage: nextPage,
+  };
+}
+
+export function selectedMacAddress(selected_mac_address){
+    return changeSelectedMacAddress(selected_mac_address);
+}
+
+
+function changeSelectedMacAddress(selected_mac_address){
+  return {
+    type: CHANGE_SELECTED_MACADDRESS,
+    selectedMacAddress: selected_mac_address
   };
 }
