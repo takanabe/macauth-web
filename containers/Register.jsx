@@ -115,8 +115,8 @@ class Register extends Component {
         <Paper style={styles.root}>
           <TextField
              style={styles.textfield}
-             rows= '10'
-             rowsMax= '20'
+             rows={10}
+             rowsMax={20}
              hintText="Please paste excel template here!"
              value={this.state.text}
              multiLine={true}

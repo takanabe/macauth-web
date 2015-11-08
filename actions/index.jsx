@@ -39,6 +39,7 @@ function requestPosts(registeredMacAddress) {
 
 
 function splitMacAddressInfoTextsIntoArray(mac_addresses_info_texts){
+  console.log("split")
   let lines = mac_addresses_info_texts.split('\n');
   // Delete spaces and tabs if each line have them at the end of texts.
   lines = lines.map(function(elem){
@@ -66,11 +67,21 @@ function createRegistrationRequestBody(mac_addresses_info_array){
       return elem.split(/\s+/);
     })
     .map(function(elem,index){
+      let information;
+      for(let i = 3; i < elem.length; i++){
+        if(i ===3){
+          information = elem[i]
+        }else{
+          information += " " + elem[i]
+        }
+      }
+      console.log("info:" + information)
       request_data_array.push(
               {"id": elem[1],
                "user_group_id": elem[0],
                "vlan_id": parseInt(elem[2]),
-               "information": elem[3]});
+               "information": information
+              });
     });
 
     // console.log(request_data_array);
@@ -79,6 +90,8 @@ function createRegistrationRequestBody(mac_addresses_info_array){
 }
 
 export function registerMacInfo(macAddressInfo) {
+  console.log("Register")
+
   let lines_array = splitMacAddressInfoTextsIntoArray(macAddressInfo);
   lines_array = deleteLinesIncludeOnlySpacesAndTabs(lines_array)
   let request_body = createRegistrationRequestBody(lines_array);
@@ -175,7 +188,7 @@ export function changeCurrentPage(nextPage){
 function changePage(nextPage){
   return {
     type: CHANGE_PAGE,
-    nextPage: nextPage,
+    nextPage: nextPage
   };
 }
 

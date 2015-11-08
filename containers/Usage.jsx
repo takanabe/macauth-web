@@ -25,11 +25,11 @@ class Usage extends Component {
       },
       title: {
         marginLeft: 20,
-        textAlign: 'left',
+        textAlign: 'left'
       },
       text: {
         textAlign: 'left',
-        fontSize: 15,
+        fontSize: 15
       }
     };
 
@@ -41,19 +41,18 @@ class Usage extends Component {
             <ul>
               <li style={styles.text} >新規MACアドレスの追加はRegistrationから</li>
               <li style={styles.text} >既存MACアドレスの検索はSearchから</li>
-              <li style={styles.text} >既存MACアドレスの変更はSearchから</li>
               <li style={styles.text} >既存MACアドレスの削除はSearchから</li>
             </ul>
             <br/>
           <h1 style={styles.title}> 困ったとき</h1>
             <ul>
               <li style={styles.text} >Githubにあるコードを読む</li>
-              <li style={styles.text} >開発者に機能改善を依頼する</li>
+              <li style={styles.text} >挙動がおかしいときは左上のMACくん2をクリックする</li>
             </ul>
             <br/>
           <h1 style={styles.title}> 未実装部分</h1>
             <ul>
-              <li style={styles.text} >SearchからのMACアドレス一括削除(DELETE CHECKED ROWSボタン)</li>
+              <li style={styles.text} >Edit機能(EDITするときは一度データを削除する事)</li>
             </ul>
         </Paper>
       </div>

@@ -50,7 +50,7 @@ class Pagination extends Component {
       }
       pagination = pagination_num_array.map((elem,index) =>
                                     <span value={elem}
-                                          style={(index == 0) ? styles.current_page : styles.other_page}
+                                          style={(index === 0) ? styles.current_page : styles.other_page}
                                           onClick={this.props.handlePagination}>{elem}</span>
                                    );
       console.log(pagination);
@@ -62,18 +62,18 @@ class Pagination extends Component {
       }
       pagination = pagination_num_array.map((elem,index) =>
                                     <span value={elem}
-                                          style={(index == 0) ? styles.current_page : styles.other_page}
+                                          style={(index === 0) ? styles.current_page : styles.other_page}
                                           onClick={this.props.handlePagination}>{elem}</span>
 
                                              );
     }else{
-      if(current_page == 1){
+      if(current_page === 1){
         let pagination_num_array = new Array(10);
         for (let i = 0; i < 10; i++) {
           pagination_num_array[i] = current_page + i; //page番号を1からスタートさせる
         }
         pagination = pagination_num_array.map((elem,index) =>
-                                              <span value={elem} style={(index == 0) ? styles.current_page : styles.other_page} onClick={this.props.handlePagination}>{elem}</span>
+                                              <span value={elem} style={(index === 0) ? styles.current_page : styles.other_page} onClick={this.props.handlePagination}>{elem}</span>
                                              );
         // pagination = pagination_num_array.map(elem =>
         //                                       <span value={elem}  onClick={this.props.handlePagination}>{elem}</span>
@@ -87,7 +87,7 @@ class Pagination extends Component {
           pagination_num_array[i] = current_page + i; //page番号を1からスタートさせる
         }
         pagination = pagination_num_array.map((elem,index) =>
-                                              <span value={elem} style={(index == 0) ? styles.current_page : styles.other_page} onClick={this.props.handlePagination}>{elem}</span>
+                                              <span value={elem} style={(index === 0) ? styles.current_page : styles.other_page} onClick={this.props.handlePagination}>{elem}</span>
                                              );
       }
     }
