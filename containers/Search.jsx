@@ -25,7 +25,7 @@ class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
+      modal: false
     };
 
     this.handleSearchButton = this.handleSearchButton.bind(this);
@@ -111,7 +111,7 @@ class Search extends Component {
     let selected_mac_address = fetchedData.selected_mac_address;
 
     console.log(selected_mac_address)
-    if(selected_mac_address == undefined){
+    if(selected_mac_address === undefined){
 
       this.handleError()
     }else if(0 < selected_mac_address.length){
@@ -125,7 +125,7 @@ class Search extends Component {
 
   handleSelection(selectedRows){
     let { dispatch, fetchedData } = this.props;
-    if(selectedRows.length == 0 ){
+    if(selectedRows.length === 0 ){
       dispatch(selectedMacAddress(""));
     }else{
       let selected_mac_addresses = fetchedData.mac_addresses[selectedRows[0]];
@@ -246,7 +246,6 @@ class Search extends Component {
           fixedFooter={this.props.fixedFooter}
           selectable={true}
           multiSelectable={false}
-          onCellClick={false}
           onRowSelection={this.handleSelection}>
           <TableHeader>
             <TableRow>
