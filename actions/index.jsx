@@ -18,7 +18,7 @@ function callPostApi(api_name,request_body, api_url=API_ENDPOINT_URL) {
       .end(
         (err, res) => {
           if (err) {
-            alert('Invalid format data\n' + err);
+            alert('Invalid format data or there is already data having same MAC Address\n' + err);
             reject(err);
           } else {
             // console.log(res.text);

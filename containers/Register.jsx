@@ -20,6 +20,7 @@ class Register extends Component {
     };
 
     this.handleRegisterButton = this.handleRegisterButton.bind(this);
+    this.handleTemplateButton= this.handleTemplateButton.bind(this);
     this.handleCustomDialogCancel = this.handleCustomDialogCancel.bind(this);
     this.handleCustomDialogSubmit = this.handleCustomDialogSubmit.bind(this);
     this.handleTextFieldChange= this.handleTextFieldChange.bind(this);
@@ -28,6 +29,10 @@ class Register extends Component {
 
   handleRegisterButton() {
     this.refs.customDialog.show();
+  }
+
+  handleTemplateButton() {
+    this.setState({ text: "UG-1\taabbccddeeff\t1000\tmacbook air"});
   }
 
   handleCustomDialogCancel() {
@@ -130,7 +135,8 @@ class Register extends Component {
              onTouchTap={this.handleRegisterButton} />
           <RaisedButton
              style={styles.templateButton}
-             label="Display Template" />
+             label="Display Template"
+             onTouchTap={this.handleTemplateButton} />
         </div>
         </div>
         <Dialog
