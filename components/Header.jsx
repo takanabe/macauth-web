@@ -70,7 +70,7 @@ class Header extends Component {
       <EnhancedButton
         linkButton={true}
         href="/">
-        <span style={styles.span}>MACくん2</span>
+        <span style={styles.span}>MAC Auth</span>
       </EnhancedButton>)
 
     return (
