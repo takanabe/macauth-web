@@ -6,7 +6,8 @@ export const CHANGE_PAGE = 'CHANGE_PAGE';
 export const CHANGE_SELECTED_MACADDRESS = 'CHANGE_SELECTED_MACADDRESS';
 
 
-let API_ENDPOINT_URL = (false) ? "https://exapmle.com" : 'http://127.0.0.1:3000';
+let is_local = false
+let API_ENDPOINT_URL = (is_local) ? "https://127.0.0.1:3000" : 'http://op:3000';
 
 function callPostApi(api_name,request_body, api_url=API_ENDPOINT_URL) {
   console.log("Call POST API")
