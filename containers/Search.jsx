@@ -267,6 +267,7 @@ class Search extends Component {
             </TableRow>
           </TableHeader>
           <TableBody
+            deselectOnClickaway={false}
             showRowHover={true} >
             {elem}
           </TableBody>
