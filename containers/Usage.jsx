@@ -46,14 +46,14 @@ class Usage extends Component {
             <br/>
           <h1 style={styles.title}> 困ったとき</h1>
             <ul>
-              <li style={styles.text} >挙動がおかしいときは左上のMACくん2をクリックする</li>
+              <li style={styles.text} >挙動がおかしいときは左上のMAC Authをクリックする</li>
               <li style={styles.text} >Githubにあるコードを読む。自分で改造する</li>
               <li style={styles.text} >フロントエンド部分のみフルスクラッチで作り直す(APIサーバとは疎結合になっている)</li>
             </ul>
             <br/>
           <h1 style={styles.title}> 未実装部分</h1>
             <ul>
-              <li style={styles.text} >Edit機能(暫定対処としてEDITするときは一度データを削除する事)。APIには実装済み</li>
+              <li style={styles.text} >Edit機能(暫定対処としてEDITするときは一度データを削除する事)。APIサーバには実装済み</li>
             </ul>
         </Paper>
       </div>

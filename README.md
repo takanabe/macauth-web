@@ -1,10 +1,7 @@
-# mackun2-web
-A web application for mackun2(manage macaddresses and VLANs) with ES6 + React + Redux
+# macauth web
+A web application for MAC address management portal with ES6 + React + Redux
 
 # Usage
-
-
-# Prepare development environment
 
 ## Installation
 ```
@@ -24,8 +21,11 @@ Becareful! the webpack-dev-server rebuild files in `src` automatically but the b
 
 
 ## Build assets
-To put compiled files into `dist` directory, type the following command.
+To put compiled files into `static` directory, type the following command.
 
 ```
-$ npm run build
+$ MACAUTH_SV_FQDN=[YOUR MACAUTH SERVER FQDN] npm run build
 ```
+
+[YOUR MACAUTH SERVER FQDN] is FQDN such as `www.example.com` and it automatically add your macauth api server FQDN in `action/index.jsx.` by using webpack `DefinePlugin`.
+
