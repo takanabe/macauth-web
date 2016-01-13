@@ -32,7 +32,7 @@ class Footer extends Component {
     return (
       <footer className="footer">
       <div style={styles.footerStyle}>
-        <p style={styles.footerText}>Mackun web is maintained on <a style={styles.footerLink} href="https://github.com/takanabe/mackun2-web"> https://github.com/takanabe/mackun2-web</a>. If there are any problems please access the url shown above modify the codes.
+        <p style={styles.footerText}>macauth web is maintained on <a style={styles.footerLink} href="https://github.com/takanabe/macauth-web"> https://github.com/takanabe/macauth-web</a>. If there are any problems please access the url to modify codes or confirm your requests.
         </p>
       </div>
       </footer>

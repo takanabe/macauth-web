@@ -1,3 +1,5 @@
+var webpack = require("webpack")
+
 module.exports = {
   context: __dirname + "/src",
   entry: {
@@ -27,4 +29,9 @@ module.exports = {
   eslint: {
     configFile: './.eslintrc'
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      MACAUTH_SV_FQDN: JSON.stringify(process.env.MACAUTH_SV_FQDN),
+    })
+  ]
 };

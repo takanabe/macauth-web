@@ -6,8 +6,7 @@ export const CHANGE_PAGE = 'CHANGE_PAGE';
 export const CHANGE_SELECTED_MACADDRESS = 'CHANGE_SELECTED_MACADDRESS';
 
 
-let is_local = false
-let API_ENDPOINT_URL = (is_local) ? "http://127.0.0.1" : 'http://op:3000';
+let API_ENDPOINT_URL = (typeof MACAUTH_SV_FQDN !== "undefined") ? "http://" + MACAUTH_SV_FQDN + ":3000" : 'http://127.0.0.1';
 
 function callPostApi(api_name,request_body, api_url=API_ENDPOINT_URL) {
   console.log("Call POST API")
