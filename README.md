@@ -5,7 +5,7 @@ A web application for MAC address management portal with ES6 + React + Redux
 
 ## Installation
 ```
-$ git clone git@github.com:takanabe/mackun2-web.git
+$ git clone https://github.com/takanabe/macauth-web.git
 $ npm install
 ```
 
